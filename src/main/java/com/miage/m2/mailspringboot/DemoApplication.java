@@ -1,6 +1,7 @@
 package com.miage.m2.mailspringboot;
 
 import com.miage.m2.mailspringboot.mail.MailClient;
+import com.miage.m2.mailspringboot.mail.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,7 +12,7 @@ import com.miage.m2.mailspringboot.loggers.Logger;
 public class DemoApplication implements CommandLineRunner {
 
 	@Autowired
-	private MailClient mailClient;
+	private MailService mailClient;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
