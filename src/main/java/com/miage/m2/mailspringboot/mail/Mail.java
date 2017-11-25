@@ -48,4 +48,13 @@ public class Mail {
     public void setHost(String host) {
         this.host = host;
     }
+
+    @Override
+    public String toString() {
+        return "Mail{" +
+                "to='" + to + '\'' +
+                ", from='" + from + '\'' +
+                ", host='" + host + '\'' +
+                '}';
+    }
 }

@@ -22,23 +22,14 @@ public class DemoApplication implements CommandLineRunner {
 
 		mailClient.send("Test subject", "Awesome client");
 		mailClient.receive();
-	}
 
-	public static void log(String message) {
-		try {
-			Class loggerF = Class.forName("com.miage.m2.mailspringboot.loggers.FileLogger");
-			Class loggerC = Class.forName("com.miage.m2.mailspringboot.loggers.ConsoleLogger");
-			Logger loggerCC = (Logger) loggerC.newInstance();
-			Logger loggerFF = (Logger) loggerF.newInstance();
-			loggerCC.log(message);
-			loggerFF.log(message);
+		SampleServiceAspect sampleServiceAspect = new SampleServiceAspect();
+		sampleServiceAspect.beforeSampleCreation("TestObject");
 
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		}
+		SampleService sampleService = new SampleService();
+		Sample sample = sampleService.createSample("TestObject");
+		System.out.println(sample.toString());
+
+		//sampleServiceAspect.aroundSampleCreation("TestObject");
 	}
 }

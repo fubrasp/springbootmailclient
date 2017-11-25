@@ -66,10 +66,6 @@ public class MailClient implements  MailService{
             // Send message
             Transport.send(message);
 
-            System.out.println("Sent message successfully....");
-
-            DemoApplication.log("Mail "+subject+" send");
-
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -104,11 +100,11 @@ public class MailClient implements  MailService{
             for (int i = 0, n = messages.length; i < n; i++) {
                 Message message = messages[i];
 
-                DemoApplication.log("---------------------------------"+"\n");
-                DemoApplication.log("Email Number " + (i + 1)+"\n");
-                DemoApplication.log("Subject: " + message.getSubject()+"\n");
-                DemoApplication.log("From: " + message.getFrom()[0]+"\n");
-                DemoApplication.log("Text: " + message.getContent().toString()+"\n");
+                System.out.println("---------------------------------"+"\n");
+                System.out.println("Email Number " + (i + 1)+"\n");
+                System.out.println("Subject: " + message.getSubject()+"\n");
+                System.out.println("From: " + message.getFrom()[0]+"\n");
+                System.out.println("Text: " + message.getContent().toString()+"\n");
 
             }
 
@@ -126,4 +122,10 @@ public class MailClient implements  MailService{
         return null;
     }
 
+    @Override
+    public String toString() {
+        return "MailClient{" +
+                "mail=" + this.mail.toString() +
+                '}';
+    }
 }
