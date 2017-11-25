@@ -1,42 +1,66 @@
 package com.miage.m2.mailspringboot.mail;
 
-import com.miage.m2.mailspringboot.DemoApplication;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-@Service
-public class MailClient implements  MailService{
+@Configuration
+@PropertySource("classpath:application.properties")
+public class MailClient implements MailService {
 
-    private Mail mail = new Mail();
+    @Value("${mail.host}")
+    private String host;
+
+    @Value("${mail.username}")
+    private String username;
+
+    @Value("${mail.password}")
+    private String password;
+
+    @Value("${mail.from}")
+    private String from;
+
+    @Value("${mail.portSMTP}")
+    private String portSMTP;
+
+    @Value("${mail.portPOP3}")
+    private String portPOP3;
+
+    @Value("${mail.to}")
+    private String to;
+
+    public MailClient MailClient() {
+        return new MailClient();
+    }
 
     public Properties initClientSMTPConf(){
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", mail.getHost());
-        props.put("mail.smtp.port", "25");
+        props.put("mail.smtp.host", this.host);
+        props.put("mail.smtp.port", this.portSMTP);
         return props;
     }
 
     public Properties initClientPOP3Conf(){
         //create properties field
         Properties properties = new Properties();
-
-        properties.put("mail.pop3.host", mail.getHost());
-        properties.put("mail.pop3.port", "1100");
+        properties.put("mail.pop3.host", this.host);
+        properties.put("mail.pop3.port", this.portPOP3);
         properties.put("mail.pop3.starttls.enable", "true");
         return properties;
     }
 
-
-
     public boolean send(String subject, String messageContent) {
-        final String username = "75f1ea16e05565";//change accordingly
-        final String password = "06551260b74810";//change accordingly
+        final String username = this.username;//change accordingly
+        final String password = this.password;//change accordingly
 
         // Get the Session object.
         Session session = Session.getInstance(initClientSMTPConf(),
@@ -51,11 +75,11 @@ public class MailClient implements  MailService{
             Message message = new MimeMessage(session);
 
             // Set From: header field of the header.
-            message.setFrom(new InternetAddress(mail.getFrom()));
+            message.setFrom(new InternetAddress(this.from));
 
             // Set To: header field of the header.
             message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse(mail.getTo()));
+                    InternetAddress.parse(this.to));
 
             // Set Subject: header field
             message.setSubject(subject);
@@ -74,8 +98,11 @@ public class MailClient implements  MailService{
     }
 
     public Object receive() {
-        final String username = "75f1ea16e05565";//change accordingly
-        final String password = "06551260b74810";//change accordingly
+        //final String username = "75f1ea16e05565";//change accordingly
+        //final String password = "06551260b74810";//change accordingly
+
+        final String username = this.username;//change accordingly
+        final String password = this.password;//change accordingly
 
         try {
 
@@ -85,7 +112,7 @@ public class MailClient implements  MailService{
             //create the POP3 store object and connect with the pop server
             Store store = emailSession.getStore("pop3");
 
-            store.connect(mail.getHost(), username, password);
+            store.connect(this.host, this.username, this.password);
 
             //create the folder object and open it
             Folder emailFolder = store.getFolder("INBOX");
@@ -122,10 +149,51 @@ public class MailClient implements  MailService{
         return null;
     }
 
-    @Override
-    public String toString() {
-        return "MailClient{" +
-                "mail=" + this.mail.toString() +
-                '}';
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setPortSMTP(String portSMTP) {
+        this.portSMTP = portSMTP;
+    }
+
+    public String getPortSMTP() {
+        return portSMTP;
+    }
+
+    public void setPortPOP3(String portPOP3) {
+        this.portPOP3 = portPOP3;
+    }
+
+    public String getPortPOP3() {
+        return portPOP3;
     }
 }
