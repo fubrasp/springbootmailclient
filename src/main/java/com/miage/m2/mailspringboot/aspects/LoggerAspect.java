@@ -1,4 +1,4 @@
-package com.miage.m2.mailspringboot;
+package com.miage.m2.mailspringboot.aspects;
 
 import com.miage.m2.mailspringboot.loggers.Logger;
 import com.miage.m2.mailspringboot.mail.MailClient;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class SampleServiceAspect {
+public class LoggerAspect {
     public static void log(String message) {
         try {
             Class loggerF = Class.forName("com.miage.m2.mailspringboot.loggers.FileLogger");
@@ -28,10 +28,6 @@ public class SampleServiceAspect {
             e.printStackTrace();
         }
     }
-    @Before("execution(* com.miage.m2.mailspringboot.SampleService.createSample ()) && args(sampleName)")
-    public void beforeSampleCreation(String sampleName) {
-        log("A request was issued for a sample name: "+sampleName);
-    }
 
     @Before("execution(* com.miage.m2.mailspringboot.mail.MailClient.send (java.lang.String, java.lang.String)) && args(subject, messageContent) ")
     public void beforeSendMail(String subject, String messageContent) {
@@ -43,14 +39,4 @@ public class SampleServiceAspect {
         log("Reading mails... ");
     }
 
-
-    @Around("execution(* com.miage.m2.mailspringboot.SampleService.createSample (java.lang.String)) && args(sampleName)")
-    public Object aroundSampleCreation(ProceedingJoinPoint proceedingJoinPoint, String sampleName) throws Throwable {
-        //LOGGER.info("A request was issued for a sample name: "+sampleName);
-        System.out.println("A request was issued for a sample name: "+sampleName);
-        sampleName = sampleName+"!";
-        Sample sample = (Sample) proceedingJoinPoint.proceed(new Object[] {sampleName});
-        sample.setName(sample.getName().toUpperCase());
-        return sample;
-    }
 }
