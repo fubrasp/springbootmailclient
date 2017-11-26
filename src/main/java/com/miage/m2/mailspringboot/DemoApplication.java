@@ -20,8 +20,6 @@ public class DemoApplication implements CommandLineRunner {
 	@Override
 	public void run(String... strings) throws Exception {
 
-		LoggerAspect loggerAspect = new LoggerAspect();
-
 		mailClient.send("Test subject", "Awesome client");
 		mailClient.receive();
 
