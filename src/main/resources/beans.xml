@@ -9,6 +9,7 @@
 
     <!-- Aspect -->
     <bean id="logAspect" class="com.miage.m2.mailspringboot.aspects.LoggerAspect"/>
+    <bean id="MailService" class="com.miage.m2.mailspringboot.mail.MailClient"/>
 
     <aop:config>
             <!-- @Before -->
